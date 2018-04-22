@@ -8,7 +8,8 @@ module.exports = function startProcess(_ref) {
       _ref$args = _ref.args,
       args = _ref$args === void 0 ? [] : _ref$args;
   var proc = (0, _crossSpawn.spawn)(command, args, {
-    stdio: 'inherit'
+    stdio: 'inherit',
+    cwd: __dirname
   });
   proc.on('close', function (code, signal) {
     if (code !== null) {
