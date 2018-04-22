@@ -4,6 +4,8 @@
 
 Hob (short for Hobgoblin) does chores in the background, helping your app run smoothly. Usually.
 
+Hob is a framework of frameworks, to enforce an opinionated setup on Conjure projects.
+
 ### Setup
 
 ```sh
