@@ -18,9 +18,10 @@ import startProcess from '../lib/start-process'
   if (!process.env.HOB_READY) {
     return spawn(`${resolve(projectDir, '.hob', '.profile')} && hob ${process.argv.slice(2).join(' ')}`, {
       env: {
-        HOB_READY: true
+        HOB_READY: '1'
       },
-      command: 'bash'
+      command: 'bash',
+      shell: true
     })
   }
 
