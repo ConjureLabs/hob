@@ -1,22 +1,18 @@
 const notifier = require('node-notifier')
 const childProcess = require('child_process')
 
-export async function compile (task) {
-  await task.parallel(['bin'])
-}
+module.exports = {
+  *bin(task) {
+    task.source('bin/*').babel().target('dist/bin', {
+      mode: '0755'
+    })
+    notify('Compiled binaries')
+    yield
+  },
 
-export async function bin (task, opts) {
-  await task.source(opts.src || 'bin/*').babel().target('dist/bin', { mode: '0755' })
-  notify('Compiled binaries')
-}
-
-export default async function (task) {
-  await task.start('build')
-  await task.watch('bin/*', 'bin')
-}
-
-export async function release (task) {
-  await task.clear('dist').start('build')
+  *release(task) {
+    yield task.clear('dist').start('bin')
+  }
 }
 
 // notification helper

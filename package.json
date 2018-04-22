@@ -11,6 +11,7 @@
   },
   "scripts": {
     "build": "taskr",
+    "release": "taskr release",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
