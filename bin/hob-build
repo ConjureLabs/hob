@@ -3,7 +3,7 @@
 import parseArgs from 'minimist'
 import { resolve } from 'path'
 
-import prepareStylus from '../lib/stylus/prepare'
+import startProcess from '../lib/start-process'
 import generateClientConfig from '../lib/config/generate-client-config'
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -23,9 +23,8 @@ if (argv.help) {
   process.exit(0)
 }
 
-prepareStylus({
-  fresh: true,
-  shortNames: true
+startProcess({
+  args: ['../procs/stylus/prepare', '--fresh', '--short-names']
 })
 
 generateClientConfig()

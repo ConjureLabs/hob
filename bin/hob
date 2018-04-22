@@ -53,7 +53,6 @@ const commands = new Set([
 
 let cmd = process.argv[2]
 let args = []
-let nodeArgs = []
 
 if (new Set(['--version', '-v']).has(cmd)) {
   console.log(`hob v${pkg.version}`)
@@ -85,5 +84,5 @@ process.env.NODE_ENV = process.env.NODE_ENV || defaultEnv
 const bin = join(__dirname, 'hob-' + cmd)
 
 startProcess({
-  args: [...nodeArgs, ...[bin], ...args]
+  args: [bin, ...args]
 })

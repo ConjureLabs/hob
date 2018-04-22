@@ -59,7 +59,6 @@ var defaultCommand = 'dev';
 var commands = new Set(['init', 'build', 'start', defaultCommand]);
 var cmd = process.argv[2];
 var args = [];
-var nodeArgs = [];
 
 if (new Set(['--version', '-v']).has(cmd)) {
   console.log("hob v".concat(_package.default.version));
@@ -82,5 +81,5 @@ var defaultEnv = cmd === 'dev' ? 'development' : 'production';
 process.env.NODE_ENV = process.env.NODE_ENV || defaultEnv;
 var bin = (0, _path.join)(__dirname, 'hob-' + cmd);
 (0, _startProcess.default)({
-  args: nodeArgs.concat([bin], _toConsumableArray(args))
+  args: [bin].concat(_toConsumableArray(args))
 });

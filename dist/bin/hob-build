@@ -5,7 +5,7 @@ var _minimist = _interopRequireDefault(require("minimist"));
 
 var _path = require("path");
 
-var _prepare = _interopRequireDefault(require("../lib/stylus/prepare"));
+var _startProcess = _interopRequireDefault(require("../lib/start-process"));
 
 var _generateClientConfig = _interopRequireDefault(require("../lib/config/generate-client-config"));
 
@@ -23,8 +23,7 @@ if (argv.help) {
   process.exit(0);
 }
 
-(0, _prepare.default)({
-  fresh: true,
-  shortNames: true
+(0, _startProcess.default)({
+  args: ['../procs/stylus/prepare', '--fresh', '--short-names']
 });
 (0, _generateClientConfig.default)();

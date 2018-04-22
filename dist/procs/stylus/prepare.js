@@ -1,11 +1,11 @@
-import fs from 'fs'
-import path from 'path'
-import stylus from 'stylus'
-import crypto from 'crypto'
-import rm from 'rimraf'
-import { promisify } from 'util'
+const fs = require('fs')
+const path = require('path')
+const stylus = require('stylus')
+const crypto = require('crypto')
+const rm = require('rimraf')
+const { promisify } = require('util')
 
-import projectDir from '../project-dir'
+const projectDir = require('../project-dir')
 
 const rmSync = promisify(rm)
 const subDirsToCrawl = ['components', 'pages']
@@ -14,7 +14,7 @@ const trackJson = path.resolve(trackDir, 'track.json')
 
 let classNameCount = 0
 
-function crawlDir(dirCrawling, options) {
+function crawlDir(dirCrawling) {
   const list = fs.readdirSync(dirCrawling)
 
   for (let resource of list) {
@@ -27,12 +27,12 @@ function crawlDir(dirCrawling, options) {
     }
 
     if (fileStat.isFile() && resource.length > 5 && resource.substr(-5) === '.styl') {
-      prepareStylus(pathResolved, options)
+      prepareStylus(pathResolved)
     }
   }
 }
 
-function prepareStylus(filePath, options) {
+function prepareStylus(filePath) {
   // first check if it has already been generated
   let hashes = JSON.parse(fs.readFileSync(trackJson, 'utf8'))
   const content = fs.readFileSync(filePath, 'utf8')
@@ -63,7 +63,7 @@ function prepareStylus(filePath, options) {
       // see https://stackoverflow.com/questions/448981/which-characters-are-valid-in-css-class-names-selectors
       css = css.replace(/\.(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)(?=\s|\{|\.|:|,|\)|$])/g, function classnameReplacements(_, className) {
         if (!classLookup[className]) {
-          if (options.shortNames) {
+          if (process.argv.indexOf('--short-names')) {
             classLookup[className] = `c${++classNameCount}`
           } else {
             classLookup[className] = `${pathTokens.join('_')}__${className}`
@@ -89,11 +89,8 @@ function prepareStylus(filePath, options) {
     })
 }
 
-module.exports = async function process({
-  fresh = false,
-  shortNames = false
-}) {
-  if (fresh) {
+(async function process() {
+  if (process.argv.indexOf('--fresh')) {
     await rmSync(trackDir)
   }
 
@@ -105,8 +102,6 @@ module.exports = async function process({
   }
 
   for (let subdir of subDirsToCrawl) {
-    crawlDir(path.resolve(projectDir, subdir), {
-      shortNames
-    })
+    crawlDir(path.resolve(projectDir, subdir))
   }
-}
+})()
