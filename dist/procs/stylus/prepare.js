@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const rm = require('rimraf')
 const { promisify } = require('util')
 
-const projectDir = require('../lib/project-dir')
+const projectDir = require('../../lib/project-dir')
 
 const rmSync = promisify(rm)
 const subDirsToCrawl = ['components', 'pages']
