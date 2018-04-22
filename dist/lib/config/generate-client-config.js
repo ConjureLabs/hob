@@ -19,7 +19,7 @@ module.exports = function generateClientConfig() {
     throw new Error('Hob expects clientConfigKeys (in .hob/config.js) to be an array of dot-notated config values to carry to client config');
   }
 
-  var fullConfig = require("".concat(hobConfig.serverConfigRequire)); // each value in clientConfigKeys is expected to be dot-notated
+  var fullConfig = require(hobConfig.serverConfigRequire); // each value in clientConfigKeys is expected to be dot-notated
 
 
   var clientConfig = hobConfig.clientConfigKeys.reduce(function (config, dotNotation) {
