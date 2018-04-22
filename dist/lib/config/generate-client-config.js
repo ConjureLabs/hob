@@ -45,8 +45,9 @@ module.exports = function generateClientConfig() {
       var token = tokens[i];
       ref = ref[token];
       config[token] = i === tokens.length - 1 ? ref : {};
-      return config;
     }
+
+    return config;
   }, {});
   var configContent = "/* eslint-disable */\n// jscs:disable\n\nexport default ".concat(JSON.stringify(clientConfig), "\n");
   (0, _fs.writeFileSync)((0, _path.resolve)(_projectDir.default, 'client-config.js'), configContent, 'utf8');
