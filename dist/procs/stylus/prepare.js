@@ -63,7 +63,7 @@ function prepareStylus(filePath) {
       // see https://stackoverflow.com/questions/448981/which-characters-are-valid-in-css-class-names-selectors
       css = css.replace(/\.(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)(?=\s|\{|\.|:|,|\)|$])/g, function classnameReplacements(_, className) {
         if (!classLookup[className]) {
-          if (process.argv.indexOf('--short-names')) {
+          if (process.argv.includes('--short-names')) {
             classLookup[className] = `c${++classNameCount}`
           } else {
             classLookup[className] = `${pathTokens.join('_')}__${className}`
@@ -90,7 +90,7 @@ function prepareStylus(filePath) {
 }
 
 (async function process() {
-  if (process.argv.indexOf('--fresh')) {
+  if (process.argv.includes('--fresh')) {
     await rmSync(trackDir)
   }
 
