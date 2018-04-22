@@ -45,7 +45,7 @@ module.exports = function generateClientConfig() {
 
       var token = tokens[i];
       baseRef = baseRef[token];
-      localRef[token] = i === tokens.length - 1 ? baseRef : {};
+      localRef[token] = i === tokens.length - 1 ? baseRef : localRef[token] || {};
       localRef = localRef[token];
     }
 
