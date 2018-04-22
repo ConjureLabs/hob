@@ -4,6 +4,7 @@ import parseArgs from 'minimist'
 import { resolve } from 'path'
 
 import prepareStylus from '../lib/stylus/prepare'
+import generateClientConfig from '../lib/config/generate-client-config'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -23,7 +24,8 @@ if (argv.help) {
 }
 
 prepareStylus({
-  dir: resolve(__dirname, '../../'),
   fresh: true,
   shortNames: true
 })
+
+generateClientConfig()

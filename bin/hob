@@ -21,8 +21,14 @@ if (pkg.peerDependencies) {
   })
 }
 
-if (!existsSync(resolve(__dirname, '../../', '.profile'))) {
-  console.warn('.profile (environment config) not found - you should add a .profile to the root of your project')
+if (!existsSync(resolve(__dirname, '../../', '.hob'))) {
+  console.warn('.hob directory is needed - add a .hob dir to the base dir of your project')
+}
+if (!existsSync(resolve(__dirname, '../../', '.hob', '.profile'))) {
+  console.warn('.profile (environment config) not found - you should add a .profile to the .hob dir of your project')
+}
+if (!existsSync(resolve(__dirname, '../../', '.hob', 'client-config-keys'))) {
+  console.warn('a client-config-keys file, in .hob dir, is needed to determine what keys to carry to the client')
 }
 
 const defaultCommand = 'dev'
