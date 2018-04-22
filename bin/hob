@@ -7,53 +7,47 @@
 import { existsSync } from 'fs'
 import { resolve, join } from 'path'
 import { spawn } from 'child_process'
+import source from 'shell-source'
 
 import projectDir from '../lib/project-dir'
 
 import pkg from '../../package.json'
 import startProcess from '../lib/start-process'
 
-(function() {
-  // forcing .profile to be imported on first-go
-  if (!process.env.HOB_READY) {
-    return spawn(`${resolve(projectDir, '.hob', '.profile')} && hob ${process.argv.slice(2).join(' ')}`, {
-      env: {
-        HOB_READY: '1'
-      },
-      command: 'bash',
-      shell: true
-    })
-  }
+let isFatal = false
+function fatalCondition(message) {
+  isFatal = true
+  console.warn(`⚠️\t${message}`)
+}
 
-  let isFatal = false
-  function fatalCondition(message) {
-    isFatal = true
-    console.warn(`⚠️\t${message}`)
-  }
+if (pkg.peerDependencies) {
+  Object.keys(pkg.peerDependencies).forEach(dependency => {
+    try {
+      // When 'npm link' is used it checks the clone location. Not the project.
+      require.resolve(dependency)
+    } catch (err) {
+      fatalCondition(`The module '${dependency}' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ${dependency}'`)
+    }
+  })
+}
 
-  if (pkg.peerDependencies) {
-    Object.keys(pkg.peerDependencies).forEach(dependency => {
-      try {
-        // When 'npm link' is used it checks the clone location. Not the project.
-        require.resolve(dependency)
-      } catch (err) {
-        fatalCondition(`The module '${dependency}' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ${dependency}'`)
-      }
-    })
-  }
+if (!existsSync(resolve(projectDir, '.hob'))) {
+  fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project')
+}
+if (!existsSync(resolve(projectDir, '.hob', '.profile'))) {
+  fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project')
+}
+if (!existsSync(resolve(projectDir, '.hob', 'config.js'))) {
+  fatalCondition('a config.js file, in .hob dir, is needed for hob to work properly')
+}
 
-  if (!existsSync(resolve(projectDir, '.hob'))) {
-    fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project')
-  }
-  if (!existsSync(resolve(projectDir, '.hob', '.profile'))) {
-    fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project')
-  }
-  if (!existsSync(resolve(projectDir, '.hob', 'config.js'))) {
-    fatalCondition('a config.js file, in .hob dir, is needed for hob to work properly')
-  }
+if (isFatal) {
+  process.exit(1)
+}
 
-  if (isFatal) {
-    process.exit(1)
+source(resolve(projectDir, '.hob', '.profile'), err => {
+  if (err) {
+    throw err
   }
 
   const defaultCommand = 'dev'
@@ -100,4 +94,4 @@ import startProcess from '../lib/start-process'
   startProcess({
     args: [bin, ...args]
   })
-})()
+})

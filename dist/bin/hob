@@ -7,6 +7,8 @@ var _path = require("path");
 
 var _child_process = require("child_process");
 
+var _shellSource = _interopRequireDefault(require("shell-source"));
+
 var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
 
 var _package = _interopRequireDefault(require("../../package.json"));
@@ -23,50 +25,43 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-(function () {
-  // forcing .profile to be imported on first-go
-  if (!process.env.HOB_READY) {
-    return (0, _child_process.spawn)("".concat((0, _path.resolve)(_projectDir.default, '.hob', '.profile'), " && hob ").concat(process.argv.slice(2).join(' ')), {
-      env: {
-        HOB_READY: '1'
-      },
-      command: 'bash',
-      shell: true
-    });
-  }
+var isFatal = false;
 
-  var isFatal = false;
+function fatalCondition(message) {
+  isFatal = true;
+  console.warn("\u26A0\uFE0F\t".concat(message));
+}
 
-  function fatalCondition(message) {
-    isFatal = true;
-    console.warn("\u26A0\uFE0F\t".concat(message));
-  }
+if (_package.default.peerDependencies) {
+  Object.keys(_package.default.peerDependencies).forEach(function (dependency) {
+    try {
+      // When 'npm link' is used it checks the clone location. Not the project.
+      require.resolve(dependency);
+    } catch (err) {
+      fatalCondition("The module '".concat(dependency, "' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ").concat(dependency, "'"));
+    }
+  });
+}
 
-  if (_package.default.peerDependencies) {
-    Object.keys(_package.default.peerDependencies).forEach(function (dependency) {
-      try {
-        // When 'npm link' is used it checks the clone location. Not the project.
-        require.resolve(dependency);
-      } catch (err) {
-        fatalCondition("The module '".concat(dependency, "' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ").concat(dependency, "'"));
-      }
-    });
-  }
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob'))) {
+  fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project');
+}
 
-  if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob'))) {
-    fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project');
-  }
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', '.profile'))) {
+  fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project');
+}
 
-  if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', '.profile'))) {
-    fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project');
-  }
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', 'config.js'))) {
+  fatalCondition('a config.js file, in .hob dir, is needed for hob to work properly');
+}
 
-  if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', 'config.js'))) {
-    fatalCondition('a config.js file, in .hob dir, is needed for hob to work properly');
-  }
+if (isFatal) {
+  process.exit(1);
+}
 
-  if (isFatal) {
-    process.exit(1);
+(0, _shellSource.default)((0, _path.resolve)(_projectDir.default, '.hob', '.profile'), function (err) {
+  if (err) {
+    throw err;
   }
 
   var defaultCommand = 'dev';
@@ -97,4 +92,4 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   (0, _startProcess.default)({
     args: [bin].concat(_toConsumableArray(args))
   });
-})();
+});
