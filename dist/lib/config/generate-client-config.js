@@ -30,10 +30,11 @@ module.exports = function generateClientConfig() {
     }
 
     var tokens = dotNotation.split('.');
-    var ref = fullConfig;
+    var baseRef = fullConfig;
+    var localRef = config;
 
     for (var i = 0; i < tokens.length; i++) {
-      if (ref == undefined) {
+      if (baseRef == undefined) {
         if (i === 0) {
           // should not be possible since full config is expected to be okay
           throw new Error('full config does not appear to be an object');
@@ -43,8 +44,9 @@ module.exports = function generateClientConfig() {
       }
 
       var token = tokens[i];
-      ref = ref[token];
-      config[token] = i === tokens.length - 1 ? ref : {};
+      baseRef = baseRef[token];
+      localRef[token] = i === tokens.length - 1 ? baseRef : {};
+      localRef = localRef[token];
     }
 
     return config;
