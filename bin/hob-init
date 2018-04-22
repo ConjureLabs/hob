@@ -7,14 +7,14 @@ console.log('init')
 
   - .hub dir
   - .hub/config.js
-  - .hub/.profile
+  - .hub/.env
 
   in .hub/config.js:
 
   - serverConfigRequire: '../modules/config'
   - clientConfigKeys: [ 'app.web.url' ]
 
-  in .hub/.profile:
+  in .hub/.env:
 
   - NODE_ENV=development
  */

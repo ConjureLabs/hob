@@ -47,8 +47,8 @@ if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob'))) {
   fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project');
 }
 
-if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', '.profile'))) {
-  fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project');
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', '.env'))) {
+  fatalCondition('.env (environment config) not found - you should add a .env to the .hob dir of your project');
 }
 
 if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', 'config.js'))) {
@@ -59,7 +59,7 @@ if (isFatal) {
   process.exit(1);
 }
 
-(0, _shellSource.default)((0, _path.resolve)(_projectDir.default, '.hob', '.profile'), function (err) {
+(0, _shellSource.default)((0, _path.resolve)(_projectDir.default, '.hob', '.env'), function (err) {
   if (err) {
     throw err;
   }

@@ -34,8 +34,8 @@ if (pkg.peerDependencies) {
 if (!existsSync(resolve(projectDir, '.hob'))) {
   fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project')
 }
-if (!existsSync(resolve(projectDir, '.hob', '.profile'))) {
-  fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project')
+if (!existsSync(resolve(projectDir, '.hob', '.env'))) {
+  fatalCondition('.env (environment config) not found - you should add a .env to the .hob dir of your project')
 }
 if (!existsSync(resolve(projectDir, '.hob', 'config.js'))) {
   fatalCondition('a config.js file, in .hob dir, is needed for hob to work properly')
@@ -45,7 +45,7 @@ if (isFatal) {
   process.exit(1)
 }
 
-source(resolve(projectDir, '.hob', '.profile'), err => {
+source(resolve(projectDir, '.hob', '.env'), err => {
   if (err) {
     throw err
   }
