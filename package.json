@@ -10,7 +10,7 @@
     "hob": "./dist/bin/hob"
   },
   "scripts": {
-    "build": "taskr",
+    "build": "taskr build",
     "release": "taskr release",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,6 +26,7 @@
     "cross-spawn": "^6.0.5"
   },
   "devDependencies": {
+    "@taskr/babel": "^1.1.0",
     "node-notifier": "^5.2.1",
     "taskr": "^1.1.0"
   }

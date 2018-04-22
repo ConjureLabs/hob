@@ -2,12 +2,15 @@ const notifier = require('node-notifier')
 const childProcess = require('child_process')
 
 module.exports = {
-  *bin(task) {
-    task.source('bin/*').babel().target('dist/bin', {
+  async bin(task) {
+    await task.source('bin/*').babel().target('dist/bin', {
       mode: '0755'
     })
     notify('Compiled binaries')
-    yield
+  },
+
+  *build(task) {
+    yield task.parallel(['bin']);
   },
 
   *release(task) {
@@ -16,7 +19,7 @@ module.exports = {
 }
 
 // notification helper
-function notify (msg) {
+function notify(msg) {
   return notifier.notify({
     title: 'Hob',
     message: msg,
