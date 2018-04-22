@@ -1,0 +1,30 @@
+{
+  "name": "hob",
+  "version": "0.0.1",
+  "description": "Hobgoblin to do odd jobs for your apps",
+  "main": "index.js",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "hob": "./dist/bin/hob"
+  },
+  "scripts": {
+    "build": "taskr",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hob",
+    "hobgoblin",
+    "node",
+    "next"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cross-spawn": "^6.0.5"
+  },
+  "devDependencies": {
+    "taskr": "^1.1.0"
+  }
+}
