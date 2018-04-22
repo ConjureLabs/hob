@@ -5,9 +5,9 @@ var _minimist = _interopRequireDefault(require("minimist"));
 
 var _path = require("path");
 
-var _prepare = _interopRequireDefault(require("../lib/stylus/prepare"));
+var _prepare = _interopRequireDefault(require("./lib/stylus/prepare"));
 
-var _generateClientConfig = _interopRequireDefault(require("../lib/config/generate-client-config"));
+var _generateClientConfig = _interopRequireDefault(require("./lib/config/generate-client-config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

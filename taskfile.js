@@ -8,8 +8,13 @@ module.exports.bin = async function bin(task) {
   notify('Compiled binaries')
 }
 
+module.exports.lib = async function lib (task, opts) {
+  await task.source('lib/**/*.js').babel().target('dist/lib')
+  notify('Compiled lib files')
+}
+
 module.exports.build = async function build(task) {
-  await task.parallel(['bin'])
+  await task.parallel(['bin', 'lib'])
 }
 
 module.exports.release = async function release(task) {
