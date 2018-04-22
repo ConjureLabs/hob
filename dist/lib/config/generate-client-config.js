@@ -49,6 +49,6 @@ module.exports = function generateClientConfig() {
     }
   }, {});
   var configContent = "/* eslint-disable */\n// jscs:disable\n\nexport default ".concat(JSON.stringify(clientConfig), "\n");
-  (0, _fs.writeFileSync)(path.resolve(_projectDir.default, 'client-config.js'), configContent, 'utf8');
+  (0, _fs.writeFileSync)((0, _path.resolve)(_projectDir.default, 'client-config.js'), configContent, 'utf8');
   console.log('Generated client config');
 };
