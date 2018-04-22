@@ -26,8 +26,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 (function () {
   // forcing .profile to be imported on first-go
   if (!process.env.HOB_READY) {
-    return (0, _child_process.spawn)("HOB_READY=true source ".concat((0, _path.resolve)(_projectDir.default, '.hob', '.profile'), " && node hob ").concat(process.argv.slice(2).join(' ')), {
-      shell: true
+    return (0, _child_process.spawn)("source ".concat((0, _path.resolve)(_projectDir.default, '.hob', '.profile'), " && node hob ").concat(process.argv.slice(2).join(' ')), {
+      shell: true,
+      env: {
+        HOB_READY: true
+      }
     });
   }
 
