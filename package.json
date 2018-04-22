@@ -25,6 +25,7 @@
     "cross-spawn": "^6.0.5"
   },
   "devDependencies": {
+    "node-notifier": "^5.2.1",
     "taskr": "^1.1.0"
   }
 }
