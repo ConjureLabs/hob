@@ -1,3 +1,32 @@
 #!/usr/bin/env node
 
-console.log('build')
+import parseArgs from 'minimist'
+import { resolve } from 'path'
+
+import prepareStylus from '../lib/stylus/prepare'
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    h: 'help',
+    f: 'fresh'
+  },
+  boolean: ['h', 'f']
+})
+
+if (argv.help) {
+  console.log(`
+    Description
+      Compiles the application for production deployment
+    Usage
+      $ hob build
+
+    Options
+      --fresh, -f   Forces a full rebuild of all assets
+  `)
+  process.exit(0)
+}
+
+prepareStylus({
+  dir: resolve(__dirname, '../../'),
+  fresh: argv.fresh
+})
