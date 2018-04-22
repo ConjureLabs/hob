@@ -19,27 +19,38 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
+var isFatal = false;
+
+function fatalCondition(message) {
+  isFatal = true;
+  console.warn("\u26A0\uFE0F\t".concat(message));
+}
+
 if (_package.default.peerDependencies) {
   Object.keys(_package.default.peerDependencies).forEach(function (dependency) {
     try {
       // When 'npm link' is used it checks the clone location. Not the project.
       require.resolve(dependency);
     } catch (err) {
-      console.warn("The module '".concat(dependency, "' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ").concat(dependency, "'"));
+      fatalCondition("The module '".concat(dependency, "' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ").concat(dependency, "'"));
     }
   });
 }
 
 if (!(0, _fs.existsSync)((0, _path.resolve)(__dirname, '../../', '.hob'))) {
-  console.warn('.hob directory is needed - add a .hob dir to the base dir of your project');
+  fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project');
 }
 
 if (!(0, _fs.existsSync)((0, _path.resolve)(__dirname, '../../', '.hob', '.profile'))) {
-  console.warn('.profile (environment config) not found - you should add a .profile to the .hob dir of your project');
+  fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project');
 }
 
 if (!(0, _fs.existsSync)((0, _path.resolve)(__dirname, '../../', '.hob', 'client-config-keys'))) {
-  console.warn('a client-config-keys file, in .hob dir, is needed to determine what keys to carry to the client');
+  fatalCondition('a client-config-keys file, in .hob dir, is needed to determine what keys to carry to the client');
+}
+
+if (isFatal) {
+  process.exit(1);
 }
 
 var defaultCommand = 'dev';
