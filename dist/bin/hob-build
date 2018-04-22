@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+"use strict";
+
+var _minimist = _interopRequireDefault(require("minimist"));
+
+var _path = require("path");
+
+var _prepare = _interopRequireDefault(require("../lib/stylus/prepare"));
+
+var _generateClientConfig = _interopRequireDefault(require("../lib/config/generate-client-config"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var argv = (0, _minimist.default)(process.argv.slice(2), {
+  alias: {
+    h: 'help'
+  },
+  boolean: ['h']
+});
+
+if (argv.help) {
+  console.log("\n    Description\n      Compiles the application for production deployment\n    Usage\n      $ hob build\n  ");
+  process.exit(0);
+}
+
+(0, _prepare.default)({
+  fresh: true,
+  shortNames: true
+});
+(0, _generateClientConfig.default)();
