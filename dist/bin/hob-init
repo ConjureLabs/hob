@@ -2,3 +2,19 @@
 "use strict";
 
 console.log('init');
+/*
+  thigs to generate:
+
+  - .hub dir
+  - .hub/config.js
+  - .hub/.profile
+
+  in .hub/config.js:
+
+  - serverConfigRequire: '../modules/config'
+  - clientConfigKeys: [ 'app.web.url' ]
+
+  in .hub/.profile:
+
+  - NODE_ENV=development
+ */

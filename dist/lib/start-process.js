@@ -1,14 +1,13 @@
 "use strict";
 
-var _require = require('cross-spawn'),
-    spawn = _require.spawn;
+var _crossSpawn = require("cross-spawn");
 
 module.exports = function startProcess(_ref) {
   var _ref$command = _ref.command,
       command = _ref$command === void 0 ? 'node' : _ref$command,
       _ref$args = _ref.args,
       args = _ref$args === void 0 ? [] : _ref$args;
-  var proc = spawn(command, args, {
+  var proc = (0, _crossSpawn.spawn)(command, args, {
     stdio: 'inherit'
   });
   proc.on('close', function (code, signal) {

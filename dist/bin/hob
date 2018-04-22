@@ -5,6 +5,8 @@ var _fs = require("fs");
 
 var _path = require("path");
 
+var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
+
 var _package = _interopRequireDefault(require("../../package.json"));
 
 var _startProcess = _interopRequireDefault(require("../lib/start-process"));
@@ -37,15 +39,15 @@ if (_package.default.peerDependencies) {
   });
 }
 
-if (!(0, _fs.existsSync)((0, _path.resolve)(__dirname, '../../', '.hob'))) {
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob'))) {
   fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project');
 }
 
-if (!(0, _fs.existsSync)((0, _path.resolve)(__dirname, '../../', '.hob', '.profile'))) {
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', '.profile'))) {
   fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project');
 }
 
-if (!(0, _fs.existsSync)((0, _path.resolve)(__dirname, '../../', '.hob', 'client-config-keys'))) {
+if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, '.hob', 'client-config-keys'))) {
   fatalCondition('a client-config-keys file, in .hob dir, is needed to determine what keys to carry to the client');
 }
 

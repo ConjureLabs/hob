@@ -7,6 +7,8 @@
 import { existsSync } from 'fs'
 import { resolve, join } from 'path'
 
+import projectDir from '../lib/project-dir'
+
 import pkg from '../../package.json'
 import startProcess from '../lib/start-process'
 
@@ -27,13 +29,13 @@ if (pkg.peerDependencies) {
   })
 }
 
-if (!existsSync(resolve(__dirname, '../../', '.hob'))) {
+if (!existsSync(resolve(projectDir, '.hob'))) {
   fatalCondition('.hob directory is needed - add a .hob dir to the base dir of your project')
 }
-if (!existsSync(resolve(__dirname, '../../', '.hob', '.profile'))) {
+if (!existsSync(resolve(projectDir, '.hob', '.profile'))) {
   fatalCondition('.profile (environment config) not found - you should add a .profile to the .hob dir of your project')
 }
-if (!existsSync(resolve(__dirname, '../../', '.hob', 'client-config-keys'))) {
+if (!existsSync(resolve(projectDir, '.hob', 'client-config-keys'))) {
   fatalCondition('a client-config-keys file, in .hob dir, is needed to determine what keys to carry to the client')
 }
 

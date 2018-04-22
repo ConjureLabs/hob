@@ -12,6 +12,8 @@ var _rimraf = _interopRequireDefault(require("rimraf"));
 
 var _util = require("util");
 
+var _projectDir = _interopRequireDefault(require("../project-dir"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } } function _next(value) { step("next", value); } function _throw(err) { step("throw", err); } _next(); }); }; }
@@ -19,9 +21,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var rmSync = (0, _util.promisify)(_rimraf.default);
 var subDirsToCrawl = ['components', 'pages'];
 
-var projectDir = _path.default.resolve(__dirname, '../../../');
-
-var trackDir = _path.default.resolve(projectDir, '.hob', '.stylus');
+var trackDir = _path.default.resolve(_projectDir.default, '.hob', '.stylus');
 
 var trackJson = _path.default.resolve(trackDir, 'track.json');
 
@@ -88,7 +88,7 @@ function prepareStylus(filePath, options) {
 
     var pathParsed = _path.default.parse(filePath);
 
-    var pathTokens = pathParsed.dir.substr(projectDir.length + 1).split('/'); // if a file is not the typical styles.styl (say, component.styles.styl), then we need to track that to avoid name collision
+    var pathTokens = pathParsed.dir.substr(_projectDir.default.length + 1).split('/'); // if a file is not the typical styles.styl (say, component.styles.styl), then we need to track that to avoid name collision
 
     if (pathParsed.base !== 'styles.styl') {
       pathTokens.push(pathParsed.name.replace(/\.+/g, '-'));
@@ -158,7 +158,7 @@ function () {
 
             for (_i = 0; _i < subDirsToCrawl.length; _i++) {
               subdir = subDirsToCrawl[_i];
-              crawlDir(_path.default.resolve(projectDir, subdir), {
+              crawlDir(_path.default.resolve(_projectDir.default, subdir), {
                 shortNames: shortNames
               });
             }
