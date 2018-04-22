@@ -26,14 +26,15 @@
   "bugs": "https://github.com/ConjureLabs/hob/issues",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "7.0.0-beta.44",
-    "@babel/preset-env": "7.0.0-beta.44",
     "cross-spawn": "6.0.5",
     "minimist": "1.2.0",
     "rimraf": "2.6.2",
     "stylus": "0.54.5"
   },
   "devDependencies": {
+    "@babel/core": "7.0.0-beta.44",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.44",
+    "@babel/preset-env": "7.0.0-beta.44",
     "@taskr/babel": "1.1.0-next.1",
     "@taskr/clear": "1.1.0",
     "@taskr/esnext": "1.1.0",

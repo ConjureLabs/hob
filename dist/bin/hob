@@ -28,9 +28,10 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   if (!process.env.HOB_READY) {
     return (0, _child_process.spawn)("".concat((0, _path.resolve)(_projectDir.default, '.hob', '.profile'), " && hob ").concat(process.argv.slice(2).join(' ')), {
       env: {
-        HOB_READY: true
+        HOB_READY: '1'
       },
-      command: 'bash'
+      command: 'bash',
+      shell: true
     });
   }
 
