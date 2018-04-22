@@ -95,7 +95,7 @@ function prepareStylus(filePath) {
     await rmSync(trackDir)
   }
 
-  if (!existsSync(trackJson)) {
+  if (!fs.existsSync(trackJson)) {
     try {
       fs.mkdirSync(trackDir)
     } catch(err) {}
