@@ -7,10 +7,9 @@ import prepareStylus from '../lib/stylus/prepare'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
-    h: 'help',
-    f: 'fresh'
+    h: 'help'
   },
-  boolean: ['h', 'f']
+  boolean: ['h']
 })
 
 if (argv.help) {
@@ -19,14 +18,12 @@ if (argv.help) {
       Compiles the application for production deployment
     Usage
       $ hob build
-
-    Options
-      --fresh, -f   Forces a full rebuild of all assets
   `)
   process.exit(0)
 }
 
 prepareStylus({
   dir: resolve(__dirname, '../../'),
-  fresh: argv.fresh
+  fresh: true,
+  shortNames: true
 })
