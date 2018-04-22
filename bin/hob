@@ -10,6 +10,8 @@ import { resolve, join } from 'path'
 import pkg from '../../package.json'
 import startProcess from '../lib/start-process'
 
+let fatalConditions = false;
+
 if (pkg.peerDependencies) {
   Object.keys(pkg.peerDependencies).forEach(dependency => {
     try {
@@ -17,18 +19,26 @@ if (pkg.peerDependencies) {
       require.resolve(dependency)
     } catch (err) {
       console.warn(`The module '${dependency}' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ${dependency}'`)
+      fatalConditions = true
     }
   })
 }
 
 if (!existsSync(resolve(__dirname, '../../', '.hob'))) {
   console.warn('.hob directory is needed - add a .hob dir to the base dir of your project')
+  fatalConditions = true
 }
 if (!existsSync(resolve(__dirname, '../../', '.hob', '.profile'))) {
   console.warn('.profile (environment config) not found - you should add a .profile to the .hob dir of your project')
+  fatalConditions = true
 }
 if (!existsSync(resolve(__dirname, '../../', '.hob', 'client-config-keys'))) {
   console.warn('a client-config-keys file, in .hob dir, is needed to determine what keys to carry to the client')
+  fatalConditions = true
+}
+
+if (fatalConditions) {
+  process.exit(1)
 }
 
 const defaultCommand = 'dev'
