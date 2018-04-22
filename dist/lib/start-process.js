@@ -6,9 +6,7 @@ module.exports = function startProcess(_ref) {
   var _ref$command = _ref.command,
       command = _ref$command === void 0 ? 'node' : _ref$command,
       _ref$args = _ref.args,
-      args = _ref$args === void 0 ? [] : _ref$args,
-      _ref$fork = _ref.fork,
-      fork = _ref$fork === void 0 ? false : _ref$fork;
+      args = _ref$args === void 0 ? [] : _ref$args;
   var proc = (0, _crossSpawn.spawn)(command, args, {
     stdio: 'inherit',
     cwd: __dirname
