@@ -1,0 +1,90 @@
+#!/usr/bin/env node
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _from = _interopRequireDefault(require("@babel/runtime/core-js/array/from"));
+
+var _set = _interopRequireDefault(require("@babel/runtime/core-js/set"));
+
+var _keys = _interopRequireDefault(require("@babel/runtime/core-js/object/keys"));
+
+/*
+  Mostly a clone of https://github.com/zeit/next.js/blob/canary/bin/next
+ */
+var _require = require('path'),
+    join = _require.join;
+
+var _require2 = require('cross-spawn'),
+    spawn = _require2.spawn;
+
+var pkg = require('../../package.json');
+
+if (pkg.peerDependencies) {
+  (0, _keys.default)(pkg.peerDependencies).forEach(function (dependency) {
+    try {
+      // When 'npm link' is used it checks the clone location. Not the project.
+      require.resolve(dependency);
+    } catch (err) {
+      console.warn("The module '".concat(dependency, "' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ").concat(dependency, "'"));
+    }
+  });
+}
+
+var defaultCommand = 'dev';
+var commands = new _set.default(['init', 'build', 'start', defaultCommand]);
+var cmd = process.argv[2];
+var args = [];
+var nodeArgs = [];
+
+if (new _set.default(['--version', '-v']).has(cmd)) {
+  console.log("hob v".concat(pkg.version));
+  process.exit(0);
+}
+
+if (new _set.default(['--help', '-h']).has(cmd)) {
+  console.log("\n    Usage\n      $ hob <command>\n    Available commands\n      ".concat((0, _from.default)(commands).join(', '), "\n    For more information run a command with the --help flag\n      $ hob init --help\n  "));
+  process.exit(0);
+}
+
+if (commands.has(cmd)) {
+  args = process.argv.slice(3);
+} else {
+  cmd = defaultCommand;
+  args = process.argv.slice(2);
+}
+
+var defaultEnv = cmd === 'dev' ? 'development' : 'production';
+process.env.NODE_ENV = process.env.NODE_ENV || defaultEnv;
+var bin = join(__dirname, 'hob-' + cmd);
+
+var startProcess = function startProcess() {
+  var proc = spawn('node', nodeArgs.concat([bin], (0, _toConsumableArray2.default)(args)), {
+    stdio: 'inherit'
+  });
+  proc.on('close', function (code, signal) {
+    if (code !== null) {
+      process.exit(code);
+    }
+
+    if (signal) {
+      if (signal === 'SIGKILL') {
+        process.exit(137);
+      }
+
+      console.log("got signal ".concat(signal, ", exiting"));
+      process.exit(1);
+    }
+
+    process.exit(0);
+  });
+  proc.on('error', function (err) {
+    console.error(err);
+    process.exit(1);
+  });
+  return proc;
+};
+
+startProcess();
