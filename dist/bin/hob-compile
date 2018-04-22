@@ -19,7 +19,7 @@ var argv = (0, _minimist.default)(process.argv.slice(2), {
 });
 
 if (argv.help) {
-  console.log("\n    Description\n      Compiles the application\n    Usage\n      $ hob build\n\n    Options\n      --fresh, -f   Removes cache before compile\n      --min, -m     Use short CSS class names\n  ");
+  console.log("\n    Description\n      Compiles the application\n    Usage\n      $ hob compile\n\n    Options\n      --fresh, -f   Removes cache before compile\n      --min, -m     Use short CSS class names\n  ");
   process.exit(0);
 }
 
