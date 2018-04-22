@@ -6,6 +6,7 @@
 
 const { join } = require('path')
 const { spawn } = require('cross-spawn')
+const { fstatSync } = require('fs')
 
 const pkg = require('../../package.json')
 
@@ -18,6 +19,12 @@ if (pkg.peerDependencies) {
       console.warn(`The module '${dependency}' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ${dependency}'`)
     }
   })
+}
+
+try {
+  fstatSync('../../.profile')
+} catch(err) {
+  console.warn('.profile (environment config) not found - you should add a .profile to the root of your project')
 }
 
 const defaultCommand = 'dev'
