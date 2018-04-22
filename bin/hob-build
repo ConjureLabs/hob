@@ -3,8 +3,8 @@
 import parseArgs from 'minimist'
 import { resolve } from 'path'
 
-import prepareStylus from './lib/stylus/prepare'
-import generateClientConfig from './lib/config/generate-client-config'
+import prepareStylus from '../lib/stylus/prepare'
+import generateClientConfig from '../lib/config/generate-client-config'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
