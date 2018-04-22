@@ -16,11 +16,11 @@ import startProcess from '../lib/start-process'
 (function() {
   // forcing .profile to be imported on first-go
   if (!process.env.HOB_READY) {
-    return spawn(`source ${resolve(projectDir, '.hob', '.profile')} && node hob ${process.argv.slice(2).join(' ')}`, {
-      shell: true,
+    return spawn(`${resolve(projectDir, '.hob', '.profile')} && hob ${process.argv.slice(2).join(' ')}`, {
       env: {
         HOB_READY: true
-      }
+      },
+      command: 'bash'
     })
   }
 
