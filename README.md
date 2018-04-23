@@ -21,3 +21,15 @@ yarn add @conjurelabs/hob
 ### Building
 
 `hob build`
+
+### Lints
+
+`hob lint`
+
+This will run lints and coding style checks on your project. It uses defaults set by Hob.
+
+You can override the defaults by adding the following to your project's root dir:
+
+- `.eslintignore`
+- `.eslintrc`
+- `.jscsrc`
