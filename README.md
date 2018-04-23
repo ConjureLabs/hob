@@ -18,6 +18,14 @@ or
 yarn add @conjurelabs/hob
 ```
 
+### Dev
+
+`hob dev`
+
+`dev` runs your dev environment.
+
+It will transpile certain things, reset the db if you want, and then start up the express server.
+
 ### Building
 
 `hob build`
