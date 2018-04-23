@@ -65,7 +65,7 @@ if (isFatal) {
   }
 
   var defaultCommand = 'dev';
-  var commands = new Set(['init', 'build', 'compile', 'start', defaultCommand]);
+  var commands = new Set(['init', 'build', 'compile', 'lint', 'start', defaultCommand]);
   var cmd = process.argv[2];
   var args = [];
 

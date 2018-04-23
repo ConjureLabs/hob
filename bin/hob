@@ -55,6 +55,7 @@ source(resolve(projectDir, '.hob', '.env'), err => {
     'init',
     'build',
     'compile',
+    'lint',
     'start',
     defaultCommand
   ])

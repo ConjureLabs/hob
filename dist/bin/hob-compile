@@ -13,9 +13,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var argv = (0, _minimist.default)(process.argv.slice(2), {
   alias: {
-    h: 'help'
+    h: 'help',
+    f: 'fresh',
+    m: 'min'
   },
-  boolean: ['h']
+  boolean: ['h', 'f', 'm']
 });
 
 if (argv.help) {

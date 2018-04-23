@@ -8,9 +8,11 @@ import generateClientConfig from '../lib/config/generate-client-config'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
-    h: 'help'
+    h: 'help',
+    f: 'fresh',
+    m: 'min'
   },
-  boolean: ['h']
+  boolean: ['h', 'f', 'm']
 })
 
 if (argv.help) {
