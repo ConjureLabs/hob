@@ -30,6 +30,5 @@ This will run lints and coding style checks on your project. It uses defaults se
 
 You can override the defaults by adding the following to your project's root dir:
 
-- `.eslintignore`
 - `.eslintrc`
 - `.jscsrc`

@@ -22,7 +22,7 @@ if (argv.help) {
       $ hob lint
 
     This will run default lints, with Hob settings
-    You can add a custom .eslintrc, .eslintignore, or .jscsrc
+    You can add a custom .eslintrc, or .jscsrc
     to the root of your project if you want specific config
   `)
   process.exit(0)

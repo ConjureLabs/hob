@@ -21,7 +21,7 @@ var argv = (0, _minimist.default)(process.argv.slice(2), {
 });
 
 if (argv.help) {
-  console.log("\n    Description\n      Runs lints\n    Usage\n      $ hob lint\n\n    This will run default lints, with Hob settings\n    You can add a custom .eslintrc, .eslintignore, or .jscsrc\n    to the root of your project if you want specific config\n  ");
+  console.log("\n    Description\n      Runs lints\n    Usage\n      $ hob lint\n\n    This will run default lints, with Hob settings\n    You can add a custom .eslintrc, or .jscsrc\n    to the root of your project if you want specific config\n  ");
   process.exit(0);
 }
 
