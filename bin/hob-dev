@@ -33,8 +33,7 @@ if (argv.help) {
 function wrapup() {
   // kick off server (express)
   startProcess({
-    command: 'node',
-    args: './server',
+    args: './server/',
     cwd: projectDir
   })
 }
