@@ -22,6 +22,18 @@ yarn add @conjurelabs/hob
 
 `hob build`
 
+`build` is meant to generate production-ready builds. This will:
+
+1. transpile styles
+2. generate client config
+3. [`next build`](https://github.com/zeit/next.js#production-deployment)
+
+### Compiling
+
+`hob compile`
+
+Similar to `hob build`, but does not fire `next build`, and does not minify or munge any transpiled code.
+
 ### Lints
 
 `hob lint`
