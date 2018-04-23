@@ -17,6 +17,11 @@ module.exports = function startProcess(_ref, onClose) {
   onClose = typeof onClose === 'function' ? onClose : function (code) {
     process.exit(code);
   };
+
+  if (!Array.isArray(args)) {
+    throw new Error('startProcess args must be an array');
+  }
+
   var proc = (0, _crossSpawn.spawn)(command, args, {
     stdio: 'inherit',
     cwd: cwd

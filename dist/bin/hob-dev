@@ -31,7 +31,7 @@ if (argv.help) {
 function wrapup() {
   // kick off server (express)
   (0, _startProcess.default)({
-    args: './server/',
+    args: ['./server'],
     cwd: _projectDir.default
   });
 }
