@@ -42,14 +42,26 @@ startProcess({
     '--ignore-path', eslintignore,
     '--quiet'
   ]
-})
+}, onClose = code => {
+  if (code !== 0) {
+    process.exit(0)
+  }
+  console.log('Lints passed')
 
-const projectJscsrc = resolve(projectDir, '.jscsrc')
-const jscsrc = existsSync(projectJscsrc) ? projectJscsrc : resolve(hobConf, '.jscsrc')
-startProcess({
-  command: 'jscs',
-  args: [
-    projectDir,
-    '-c', jscsrc
-  ]
+  const projectJscsrc = resolve(projectDir, '.jscsrc')
+  const jscsrc = existsSync(projectJscsrc) ? projectJscsrc : resolve(hobConf, '.jscsrc')
+  startProcess({
+    command: 'jscs',
+    args: [
+      projectDir,
+      '-c', jscsrc
+    ]
+  }, onClose = code => {
+    if (code !== 0) {
+      process.exit(0)
+    }
+
+    console.log('Coding style passed')
+    process.exit(0)
+  })
 })
