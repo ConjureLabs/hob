@@ -28,11 +28,9 @@ if (argv.help) {
 var hobConf = (0, _path.resolve)(__dirname, '../', 'conf');
 var projectEslintrc = (0, _path.resolve)(_projectDir.default, '.eslintrc');
 var eslintrc = (0, _fs.existsSync)(projectEslintrc) ? projectEslintrc : (0, _path.resolve)(hobConf, '.eslintrc');
-var projectEslintignore = (0, _path.resolve)(_projectDir.default, '.eslintignore');
-var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignore : (0, _path.resolve)(hobConf, '.eslintignore');
 (0, _startProcess.default)({
   command: 'eslint',
-  args: [_projectDir.default, '-c', eslintrc, '--ignore-path', eslintignore, '--quiet'],
+  args: [_projectDir.default, '-c', eslintrc, '--quiet'],
   cwd: _projectDir.default
 }, function (code) {
   if (code !== 0) {
