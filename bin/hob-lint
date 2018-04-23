@@ -41,7 +41,8 @@ startProcess({
     '-c', eslintrc,
     '--ignore-path', eslintignore,
     '--quiet'
-  ]
+  ],
+  cwd: projectDir
 }, code => {
   if (code !== 0) {
     process.exit(0)
@@ -55,7 +56,8 @@ startProcess({
     args: [
       projectDir,
       '-c', jscsrc
-    ]
+    ],
+    cwd: projectDir
   }, code => {
     if (code !== 0) {
       process.exit(0)

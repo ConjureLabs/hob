@@ -32,7 +32,8 @@ var projectEslintignore = (0, _path.resolve)(_projectDir.default, '.eslintignore
 var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignore : (0, _path.resolve)(hobConf, '.eslintignore');
 (0, _startProcess.default)({
   command: 'eslint',
-  args: [_projectDir.default, '-c', eslintrc, '--ignore-path', eslintignore, '--quiet']
+  args: [_projectDir.default, '-c', eslintrc, '--ignore-path', eslintignore, '--quiet'],
+  cwd: _projectDir.default
 }, function (code) {
   if (code !== 0) {
     process.exit(0);
@@ -43,7 +44,8 @@ var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignor
   var jscsrc = (0, _fs.existsSync)(projectJscsrc) ? projectJscsrc : (0, _path.resolve)(hobConf, '.jscsrc');
   (0, _startProcess.default)({
     command: 'jscs',
-    args: [_projectDir.default, '-c', jscsrc]
+    args: [_projectDir.default, '-c', jscsrc],
+    cwd: _projectDir.default
   }, function (code) {
     if (code !== 0) {
       process.exit(0);
