@@ -28,6 +28,7 @@ if (argv.help) {
 }
 
 function wrapup() {
+  // kick off server (express)
   startProcess({
     command: 'node',
     args: './server',
@@ -35,6 +36,7 @@ function wrapup() {
   })
 }
 
+// 1. transpile styles
 startProcess({
   args: ['../procs/stylus/prepare']
 }, code => {
@@ -42,8 +44,10 @@ startProcess({
     process.exit()
   }
 
+  // 2. generate client config file
   generateClientConfig()
 
+  // 3.a. if --fresh-db set, then wipe db and re-init
   if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
     startProcess({
       command: 'psql',
@@ -59,10 +63,12 @@ startProcess({
         process.exit()
       }
 
+      // finally wrapup
       wrapup()
     })
     return
   }
 
+  // 3.b. else wrapup
   wrapup()
 })

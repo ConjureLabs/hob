@@ -26,21 +26,24 @@ if (argv.help) {
 }
 
 function wrapup() {
+  // kick off server (express)
   (0, _startProcess.default)({
     command: 'node',
     args: './server',
     cwd: _projectDir.default
   });
-}
+} // 1. transpile styles
+
 
 (0, _startProcess.default)({
   args: ['../procs/stylus/prepare']
 }, function (code) {
   if (code !== 0) {
     process.exit();
-  }
+  } // 2. generate client config file
 
-  (0, _generateClientConfig.default)();
+
+  (0, _generateClientConfig.default)(); // 3.a. if --fresh-db set, then wipe db and re-init
 
   if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
     (0, _startProcess.default)({
@@ -50,12 +53,14 @@ function wrapup() {
     }, function (code) {
       if (code !== 0) {
         process.exit();
-      }
+      } // finally wrapup
+
 
       wrapup();
     });
     return;
-  }
+  } // 3.b. else wrapup
+
 
   wrapup();
 });
