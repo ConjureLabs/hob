@@ -5,6 +5,8 @@ var _minimist = _interopRequireDefault(require("minimist"));
 
 var _path = require("path");
 
+var _fs = require("fs");
+
 var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
 
 var _startProcess = _interopRequireDefault(require("../lib/start-process"));
@@ -51,20 +53,25 @@ function wrapup() {
     args: ['../procs/stylus/prepare']
   }, function (code) {
     if (code !== 0) {
-      process.exit();
+      process.exit(code);
     } // 2. generate client config file
 
 
     (0, _generateClientConfig.default)(); // 3.a. if --fresh-db set, then wipe db and re-init
 
     if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
+      if (!(0, _fs.existsSync)((0, _path.resolve)(_projectDir.default, 'sql', "init-".concat(NODE_ENV, ".sql")))) {
+        console.warn("'hob dev --fresh-db' requires your project to have ./sql/init-".concat(NODE_ENV, ".sql"));
+        process.exit(1);
+      }
+
       (0, _startProcess.default)({
         command: 'psql',
         args: ['postgres', '--username=conjure_admin', '-w', "--file=\"init-".concat(NODE_ENV, ".sql")],
         cwd: (0, _path.resolve)(_projectDir.default, 'sql')
       }, function (code) {
         if (code !== 0) {
-          process.exit();
+          process.exit(code);
         } // finally wrapup
 
 

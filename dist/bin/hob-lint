@@ -34,7 +34,7 @@ var eslintrc = (0, _fs.existsSync)(projectEslintrc) ? projectEslintrc : (0, _pat
   cwd: _projectDir.default
 }, function (code) {
   if (code !== 0) {
-    process.exit(0);
+    process.exit(code);
   }
 
   console.log('Lints passed');
@@ -46,7 +46,7 @@ var eslintrc = (0, _fs.existsSync)(projectEslintrc) ? projectEslintrc : (0, _pat
     cwd: _projectDir.default
   }, function (code) {
     if (code !== 0) {
-      process.exit(0);
+      process.exit(code);
     }
 
     console.log('Coding style passed');

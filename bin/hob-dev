@@ -2,6 +2,7 @@
 
 import parseArgs from 'minimist'
 import { resolve } from 'path'
+import { existsSync } from 'fs'
 
 import projectDir from '../lib/project-dir'
 import startProcess from '../lib/start-process'
@@ -54,7 +55,7 @@ function wrapup() {
     args: ['../procs/stylus/prepare']
   }, code => {
     if (code !== 0) {
-      process.exit()
+      process.exit(code)
     }
 
     // 2. generate client config file
@@ -62,6 +63,11 @@ function wrapup() {
 
     // 3.a. if --fresh-db set, then wipe db and re-init
     if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
+      if (!existsSync(resolve(projectDir, 'sql', `init-${NODE_ENV}.sql`))) {
+        console.warn(`'hob dev --fresh-db' requires your project to have ./sql/init-${NODE_ENV}.sql`)
+        process.exit(1)
+      }
+
       startProcess({
         command: 'psql',
         args: [
@@ -73,7 +79,7 @@ function wrapup() {
         cwd: resolve(projectDir, 'sql')
       }, code => {
         if (code !== 0) {
-          process.exit()
+          process.exit(code)
         }
 
         // finally wrapup

@@ -42,7 +42,7 @@ startProcess({
   cwd: projectDir
 }, code => {
   if (code !== 0) {
-    process.exit(0)
+    process.exit(code)
   }
   console.log('Lints passed')
 
@@ -57,7 +57,7 @@ startProcess({
     cwd: projectDir
   }, code => {
     if (code !== 0) {
-      process.exit(0)
+      process.exit(code)
     }
 
     console.log('Coding style passed')

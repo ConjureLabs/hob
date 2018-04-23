@@ -30,7 +30,7 @@ if (argv.help) {
   args: ['../procs/stylus/prepare', '--fresh', '--short-names']
 }, function (code) {
   if (code !== 0) {
-    process.exit();
+    process.exit(code);
   } // 2. generate client config file
 
 

@@ -2,6 +2,11 @@
 
 var _crossSpawn = require("cross-spawn");
 
+/*
+  Starts a process spawn
+  If no onClose handler set, this will process.exit()
+  If an onClose is set, it will return code, and not exit
+ */
 module.exports = function startProcess(_ref, onClose) {
   var _ref$command = _ref.command,
       command = _ref$command === void 0 ? 'node' : _ref$command,
@@ -10,7 +15,9 @@ module.exports = function startProcess(_ref, onClose) {
       _ref$cwd = _ref.cwd,
       cwd = _ref$cwd === void 0 ? __dirname : _ref$cwd;
 
-  onClose = onClose || function () {};
+  onClose = onClose || function (code) {
+    process.exit(code);
+  };
 
   var proc = (0, _crossSpawn.spawn)(command, args, {
     stdio: 'inherit',
@@ -23,22 +30,18 @@ module.exports = function startProcess(_ref, onClose) {
 
     if (signal) {
       if (signal === 'SIGKILL') {
-        onClose(137);
-        process.exit(137);
+        return onClose(137);
       }
 
       console.log("got signal ".concat(signal, ", exiting"));
-      onClose(1);
-      process.exit(1);
+      return onClose(1);
     }
 
-    onClose(0);
-    process.exit(0);
+    return onClose(0);
   });
   proc.on('error', function (err) {
     console.error(err);
-    onClose(1);
-    process.exit(1);
+    return onClose(1);
   });
   return proc;
 };
