@@ -24,12 +24,20 @@ module.exports.copyProcs = async function copyProcs(task) {
   )
 }
 
+module.exports.copyConf = async function copyConf(task) {
+  await task.source('conf/**/*').target('dist/conf')
+}
+
+module.exports.copyDirs = async function copyDirs(task) {
+  await task.parallel(['copyProcs', 'copyConf'])
+}
+
 module.exports.compile = async function compile(task) {
   await task.parallel(['bin', 'lib'])
 }
 
 module.exports.build = async function build(task) {
-  await task.serial(['compile', 'copyProcs'])
+  await task.serial(['compile', 'copyDirs'])
 } 
 
 module.exports.release = async function release(task) {
