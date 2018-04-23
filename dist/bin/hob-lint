@@ -33,17 +33,7 @@ var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignor
 (0, _startProcess.default)({
   command: 'eslint',
   args: [_projectDir.default, '-c', eslintrc, '--ignore-path', eslintignore, '--quiet']
-}, onClose = function (_onClose) {
-  function onClose(_x) {
-    return _onClose.apply(this, arguments);
-  }
-
-  onClose.toString = function () {
-    return _onClose.toString();
-  };
-
-  return onClose;
-}(function (code) {
+}, function (code) {
   if (code !== 0) {
     process.exit(0);
   }
@@ -54,7 +44,7 @@ var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignor
   (0, _startProcess.default)({
     command: 'jscs',
     args: [_projectDir.default, '-c', jscsrc]
-  }, onClose = function onClose(code) {
+  }, function (code) {
     if (code !== 0) {
       process.exit(0);
     }
@@ -62,4 +52,4 @@ var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignor
     console.log('Coding style passed');
     process.exit(0);
   });
-}));
+});
