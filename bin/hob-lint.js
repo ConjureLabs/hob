@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import parseArgs from 'minimist'
-import { resolve, existsSync } from 'fs'
+import { resolve } from 'path'
+import { existsSync } from 'fs'
 
 import projectDir from '../lib/project-dir'
 

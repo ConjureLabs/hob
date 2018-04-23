@@ -3,6 +3,8 @@
 
 var _minimist = _interopRequireDefault(require("minimist"));
 
+var _path = require("path");
+
 var _fs = require("fs");
 
 var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
@@ -21,17 +23,17 @@ if (argv.help) {
   process.exit(0);
 }
 
-var hobConf = (0, _fs.resolve)(__dirname, '../', 'conf');
-var projectEslintrc = (0, _fs.resolve)(_projectDir.default, '.eslintrc');
-var eslintrc = (0, _fs.existsSync)(projectEslintrc) ? projectEslintrc : (0, _fs.resolve)(hobConf, '.eslintrc');
-var projectEslintignore = (0, _fs.resolve)(_projectDir.default, '.eslintignore');
-var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignore : (0, _fs.resolve)(hobConf, '.eslintignore');
+var hobConf = (0, _path.resolve)(__dirname, '../', 'conf');
+var projectEslintrc = (0, _path.resolve)(_projectDir.default, '.eslintrc');
+var eslintrc = (0, _fs.existsSync)(projectEslintrc) ? projectEslintrc : (0, _path.resolve)(hobConf, '.eslintrc');
+var projectEslintignore = (0, _path.resolve)(_projectDir.default, '.eslintignore');
+var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignore : (0, _path.resolve)(hobConf, '.eslintignore');
 startProcess({
   command: 'eslint',
   args: [_projectDir.default, '-c', eslintrc, '--ignore-path', eslintignore, '--quiet']
 });
-var projectJscsrc = (0, _fs.resolve)(_projectDir.default, '.jscsrc');
-var jscsrc = (0, _fs.existsSync)(projectJscsrc) ? projectJscsrc : (0, _fs.resolve)(hobConf, '.jscsrc');
+var projectJscsrc = (0, _path.resolve)(_projectDir.default, '.jscsrc');
+var jscsrc = (0, _fs.existsSync)(projectJscsrc) ? projectJscsrc : (0, _path.resolve)(hobConf, '.jscsrc');
 startProcess({
   command: 'jscs',
   args: [_projectDir.default, '-c', jscsrc]
