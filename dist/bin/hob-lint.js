@@ -9,6 +9,8 @@ var _fs = require("fs");
 
 var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
 
+var _startProcess = _interopRequireDefault(require("../lib/start-process"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var argv = (0, _minimist.default)(process.argv.slice(2), {
@@ -28,13 +30,13 @@ var projectEslintrc = (0, _path.resolve)(_projectDir.default, '.eslintrc');
 var eslintrc = (0, _fs.existsSync)(projectEslintrc) ? projectEslintrc : (0, _path.resolve)(hobConf, '.eslintrc');
 var projectEslintignore = (0, _path.resolve)(_projectDir.default, '.eslintignore');
 var eslintignore = (0, _fs.existsSync)(projectEslintignore) ? projectEslintignore : (0, _path.resolve)(hobConf, '.eslintignore');
-startProcess({
+(0, _startProcess.default)({
   command: 'eslint',
   args: [_projectDir.default, '-c', eslintrc, '--ignore-path', eslintignore, '--quiet']
 });
 var projectJscsrc = (0, _path.resolve)(_projectDir.default, '.jscsrc');
 var jscsrc = (0, _fs.existsSync)(projectJscsrc) ? projectJscsrc : (0, _path.resolve)(hobConf, '.jscsrc');
-startProcess({
+(0, _startProcess.default)({
   command: 'jscs',
   args: [_projectDir.default, '-c', jscsrc]
 });

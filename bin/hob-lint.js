@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import { existsSync } from 'fs'
 
 import projectDir from '../lib/project-dir'
+import startProcess from '../lib/start-process'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
