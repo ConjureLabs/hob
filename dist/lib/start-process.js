@@ -14,18 +14,16 @@ module.exports = function startProcess(_ref, onClose) {
       args = _ref$args === void 0 ? [] : _ref$args,
       _ref$cwd = _ref.cwd,
       cwd = _ref$cwd === void 0 ? __dirname : _ref$cwd;
-
-  onClose = onClose || function (code) {
+  onClose = typeof onClose === 'function' ? onClose : function (code) {
     process.exit(code);
   };
-
   var proc = (0, _crossSpawn.spawn)(command, args, {
     stdio: 'inherit',
     cwd: cwd
   });
   proc.on('close', function (code, signal) {
     if (code !== null) {
-      process.exit(code);
+      return onClose(code);
     }
 
     if (signal) {
