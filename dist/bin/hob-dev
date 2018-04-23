@@ -15,13 +15,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var argv = (0, _minimist.default)(process.argv.slice(2), {
   alias: {
+    q: 'quick',
     h: 'help'
   },
-  boolean: ['h', 'f', 'm']
+  boolean: ['h', 'q', 'fresh-db']
 });
 
 if (argv.help) {
-  console.log("\n    Description\n      Compiles the application\n    Usage\n      $ hob compile\n\n    Options\n      --fresh-db    Resets the local database\n  ");
+  console.log("\n    Description\n      Runs the development application\n    Usage\n      $ hob dev\n\n    Options\n      --quick, -q   Skip any transpile steps\n      --fresh-db    Resets the local database\n  ");
   process.exit(0);
 }
 
@@ -32,35 +33,47 @@ function wrapup() {
     args: './server',
     cwd: _projectDir.default
   });
-} // 1. transpile styles
+}
 
+(function () {
+  if (argv.quick) {
+    if (argv['fresh-db']) {
+      console.warn("Can't run 'hob dev' with both '--quick' and '--fresh-db");
+      process.exit(1);
+    }
 
-(0, _startProcess.default)({
-  args: ['../procs/stylus/prepare']
-}, function (code) {
-  if (code !== 0) {
-    process.exit();
-  } // 2. generate client config file
-
-
-  (0, _generateClientConfig.default)(); // 3.a. if --fresh-db set, then wipe db and re-init
-
-  if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
-    (0, _startProcess.default)({
-      command: 'psql',
-      args: ['postgres', '--username=conjure_admin', '-w', "--file=\"init-".concat(NODE_ENV, ".sql")],
-      cwd: (0, _path.resolve)(_projectDir.default, 'sql')
-    }, function (code) {
-      if (code !== 0) {
-        process.exit();
-      } // finally wrapup
-
-
-      wrapup();
-    });
+    wrapup();
     return;
-  } // 3.b. else wrapup
+  } // 1. transpile styles
 
 
-  wrapup();
-});
+  (0, _startProcess.default)({
+    args: ['../procs/stylus/prepare']
+  }, function (code) {
+    if (code !== 0) {
+      process.exit();
+    } // 2. generate client config file
+
+
+    (0, _generateClientConfig.default)(); // 3.a. if --fresh-db set, then wipe db and re-init
+
+    if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
+      (0, _startProcess.default)({
+        command: 'psql',
+        args: ['postgres', '--username=conjure_admin', '-w', "--file=\"init-".concat(NODE_ENV, ".sql")],
+        cwd: (0, _path.resolve)(_projectDir.default, 'sql')
+      }, function (code) {
+        if (code !== 0) {
+          process.exit();
+        } // finally wrapup
+
+
+        wrapup();
+      });
+      return;
+    } // 3.b. else wrapup
+
+
+    wrapup();
+  });
+})();

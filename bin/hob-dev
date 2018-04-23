@@ -9,19 +9,21 @@ import generateClientConfig from '../lib/config/generate-client-config'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
+    q: 'quick',
     h: 'help'
   },
-  boolean: ['h', 'f', 'm']
+  boolean: ['h', 'q', 'fresh-db']
 })
 
 if (argv.help) {
   console.log(`
     Description
-      Compiles the application
+      Runs the development application
     Usage
-      $ hob compile
+      $ hob dev
 
     Options
+      --quick, -q   Skip any transpile steps
       --fresh-db    Resets the local database
   `)
   process.exit(0)
@@ -36,39 +38,51 @@ function wrapup() {
   })
 }
 
-// 1. transpile styles
-startProcess({
-  args: ['../procs/stylus/prepare']
-}, code => {
-  if (code !== 0) {
-    process.exit()
-  }
+(function() {
+  if (argv.quick) {
+    if (argv['fresh-db']) {
+      console.warn(`Can't run 'hob dev' with both '--quick' and '--fresh-db`)
+      process.exit(1)
+    }
 
-  // 2. generate client config file
-  generateClientConfig()
-
-  // 3.a. if --fresh-db set, then wipe db and re-init
-  if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
-    startProcess({
-      command: 'psql',
-      args: [
-        'postgres',
-        '--username=conjure_admin',
-        '-w',
-        `--file="init-${NODE_ENV}.sql`
-      ],
-      cwd: resolve(projectDir, 'sql')
-    }, code => {
-      if (code !== 0) {
-        process.exit()
-      }
-
-      // finally wrapup
-      wrapup()
-    })
+    wrapup()
     return
   }
 
-  // 3.b. else wrapup
-  wrapup()
-})
+  // 1. transpile styles
+  startProcess({
+    args: ['../procs/stylus/prepare']
+  }, code => {
+    if (code !== 0) {
+      process.exit()
+    }
+
+    // 2. generate client config file
+    generateClientConfig()
+
+    // 3.a. if --fresh-db set, then wipe db and re-init
+    if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
+      startProcess({
+        command: 'psql',
+        args: [
+          'postgres',
+          '--username=conjure_admin',
+          '-w',
+          `--file="init-${NODE_ENV}.sql`
+        ],
+        cwd: resolve(projectDir, 'sql')
+      }, code => {
+        if (code !== 0) {
+          process.exit()
+        }
+
+        // finally wrapup
+        wrapup()
+      })
+      return
+    }
+
+    // 3.b. else wrapup
+    wrapup()
+  })
+})()
