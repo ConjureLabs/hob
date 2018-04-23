@@ -1,7 +1,4 @@
 const notifier = require('node-notifier')
-const childProcess = require('child_process')
-const { copyFileSync } = require('fs')
-const { resolve } = require('path')
 
 module.exports.bin = async function bin(task) {
   await task.source('bin/*').babel().target('dist/bin', {
@@ -17,15 +14,11 @@ module.exports.lib = async function lib(task, opts) {
 
 module.exports.copyProcs = async function copyProcs(task) {
   await task.source('procs/**/*').target('dist/procs')
-  // task is not copying .gitignore :(
-  copyFileSync(
-    resolve(__dirname, 'procs', 'stylus', '.gitignore'),
-    resolve(__dirname, 'dist', 'procs', 'stylus', '.gitignore')
-  )
+  await task.source('procs/**/.*').target('dist/procs')
 }
 
 module.exports.copyConf = async function copyConf(task) {
-  await task.source('conf/**/*').target('dist/conf')
+  await task.source('conf/**/.*').target('dist/conf')
 }
 
 module.exports.copyDirs = async function copyDirs(task) {
