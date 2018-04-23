@@ -5,6 +5,7 @@ import { resolve } from 'path'
 
 import startProcess from '../lib/start-process'
 import generateClientConfig from '../lib/config/generate-client-config'
+import projectDir from '../lib/project-dir'
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
@@ -23,8 +24,21 @@ if (argv.help) {
   process.exit(0)
 }
 
+// 1. transpile styles
 startProcess({
   args: ['../procs/stylus/prepare', '--fresh', '--short-names']
-})
+}, code => {
+  if (code !== 0) {
+    process.exit()
+  }
 
-generateClientConfig()
+  // 2. generate client config file
+  generateClientConfig()
+
+  // 3. `next build`
+  startProcess({
+    command: 'next',
+    args: ['build'],
+    cwd: projectDir
+  })
+})

@@ -9,6 +9,8 @@ var _startProcess = _interopRequireDefault(require("../lib/start-process"));
 
 var _generateClientConfig = _interopRequireDefault(require("../lib/config/generate-client-config"));
 
+var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var argv = (0, _minimist.default)(process.argv.slice(2), {
@@ -21,9 +23,22 @@ var argv = (0, _minimist.default)(process.argv.slice(2), {
 if (argv.help) {
   console.log("\n    Description\n      Compiles the application for production deployment\n    Usage\n      $ hob build\n  ");
   process.exit(0);
-}
+} // 1. transpile styles
+
 
 (0, _startProcess.default)({
   args: ['../procs/stylus/prepare', '--fresh', '--short-names']
+}, function (code) {
+  if (code !== 0) {
+    process.exit();
+  } // 2. generate client config file
+
+
+  (0, _generateClientConfig.default)(); // 3. `next build`
+
+  (0, _startProcess.default)({
+    command: 'next',
+    args: ['build'],
+    cwd: _projectDir.default
+  });
 });
-(0, _generateClientConfig.default)();
