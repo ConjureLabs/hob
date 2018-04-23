@@ -1,4 +1,61 @@
 #!/usr/bin/env node
 "use strict";
 
-console.log('dev');
+var _minimist = _interopRequireDefault(require("minimist"));
+
+var _path = require("path");
+
+var _projectDir = _interopRequireDefault(require("../lib/project-dir"));
+
+var _startProcess = _interopRequireDefault(require("../lib/start-process"));
+
+var _generateClientConfig = _interopRequireDefault(require("../lib/config/generate-client-config"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var argv = (0, _minimist.default)(process.argv.slice(2), {
+  alias: {
+    h: 'help'
+  },
+  boolean: ['h', 'f', 'm']
+});
+
+if (argv.help) {
+  console.log("\n    Description\n      Compiles the application\n    Usage\n      $ hob compile\n\n    Options\n      --fresh-db    Resets the local database\n  ");
+  process.exit(0);
+}
+
+function wrapup() {
+  (0, _startProcess.default)({
+    command: 'node',
+    args: './server',
+    cwd: _projectDir.default
+  });
+}
+
+(0, _startProcess.default)({
+  args: ['../procs/stylus/prepare']
+}, function (code) {
+  if (code !== 0) {
+    process.exit();
+  }
+
+  (0, _generateClientConfig.default)();
+
+  if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
+    (0, _startProcess.default)({
+      command: 'psql',
+      args: ['postgres', '--username=conjure_admin', '-w', "--file=\"init-".concat(NODE_ENV, ".sql")],
+      cwd: (0, _path.resolve)(_projectDir.default, 'sql')
+    }, function (code) {
+      if (code !== 0) {
+        process.exit();
+      }
+
+      wrapup();
+    });
+    return;
+  }
+
+  wrapup();
+});

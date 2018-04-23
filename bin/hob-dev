@@ -1,3 +1,68 @@
 #!/usr/bin/env node
 
-console.log('dev')
+import parseArgs from 'minimist'
+import { resolve } from 'path'
+
+import projectDir from '../lib/project-dir'
+import startProcess from '../lib/start-process'
+import generateClientConfig from '../lib/config/generate-client-config'
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    h: 'help'
+  },
+  boolean: ['h', 'f', 'm']
+})
+
+if (argv.help) {
+  console.log(`
+    Description
+      Compiles the application
+    Usage
+      $ hob compile
+
+    Options
+      --fresh-db    Resets the local database
+  `)
+  process.exit(0)
+}
+
+function wrapup() {
+  startProcess({
+    command: 'node',
+    args: './server',
+    cwd: projectDir
+  })
+}
+
+startProcess({
+  args: ['../procs/stylus/prepare']
+}, code => {
+  if (code !== 0) {
+    process.exit()
+  }
+
+  generateClientConfig()
+
+  if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
+    startProcess({
+      command: 'psql',
+      args: [
+        'postgres',
+        '--username=conjure_admin',
+        '-w',
+        `--file="init-${NODE_ENV}.sql`
+      ],
+      cwd: resolve(projectDir, 'sql')
+    }, code => {
+      if (code !== 0) {
+        process.exit()
+      }
+
+      wrapup()
+    })
+    return
+  }
+
+  wrapup()
+})
