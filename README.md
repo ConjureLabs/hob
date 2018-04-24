@@ -24,7 +24,21 @@ yarn add @conjurelabs/hob
 
 `dev` runs your dev environment.
 
-It will transpile certain things, reset the db if you want, and then start up the express server.
+It will transpile certain things, reset the db if you want, and then start up the express serve
+
+### Start
+
+`hob start`
+
+Runs the app, meant for Production.
+
+It does not transpile or otherwise prepare the app, since it should be pre-built.
+
+### Compiling
+
+`hob compile`
+
+Similar to `hob build`, but does not fire `next build`, and does not minify or munge any transpiled code.
 
 ### Building
 
@@ -35,12 +49,6 @@ It will transpile certain things, reset the db if you want, and then start up th
 1. transpile styles
 2. generate client config
 3. [`next build`](https://github.com/zeit/next.js#production-deployment)
-
-### Compiling
-
-`hob compile`
-
-Similar to `hob build`, but does not fire `next build`, and does not minify or munge any transpiled code.
 
 ### Lints
 
