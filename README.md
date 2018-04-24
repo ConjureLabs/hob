@@ -1,12 +1,14 @@
-<kbd>hob</kbd>
+# Hob
 
-![](https://media0.giphy.com/media/FD3of7ehZt4li/giphy.gif)
+Hob (short for Hobgoblin) does chores in the background, helping your app run smoothly.
 
-Hob (short for Hobgoblin) does chores in the background, helping your app run smoothly. Usually.
+Hob is a framework of frameworks, and can be used to do the following:
 
-Hob is a framework of frameworks, to enforce an opinionated setup on Conjure projects.
+- :white_check_mark: run [next.js](https://github.com/zeit/next.js) apps w/ express servers
+- :white_check_mark: lint checks
+- :white_check_mark: structured client assets
 
-### Setup
+## Setup
 
 ```sh
 npm install --save @conjurelabs/hob
@@ -18,7 +20,7 @@ or
 yarn add @conjurelabs/hob
 ```
 
-### Dev
+## Dev
 
 `hob dev`
 
@@ -26,7 +28,7 @@ yarn add @conjurelabs/hob
 
 It will transpile certain things, reset the db if you want, and then start up the express serve
 
-### Start
+## Start
 
 `hob start`
 
@@ -34,13 +36,13 @@ Runs the app, meant for Production.
 
 It does not transpile or otherwise prepare the app, since it should be pre-built.
 
-### Compiling
+## Compiling
 
 `hob compile`
 
 Similar to `hob build`, but does not fire `next build`, and does not minify or munge any transpiled code.
 
-### Building
+## Building
 
 `hob build`
 
@@ -50,7 +52,7 @@ Similar to `hob build`, but does not fire `next build`, and does not minify or m
 2. generate client config
 3. [`next build`](https://github.com/zeit/next.js#production-deployment)
 
-### Lints
+## Lints
 
 `hob lint`
 
