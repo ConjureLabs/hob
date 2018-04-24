@@ -1,5 +1,5 @@
 {
-  "name": "hob",
+  "name": "@conjurelabs/hob",
   "version": "0.0.1",
   "description": "Hobgoblin to do odd jobs for your apps",
   "main": "index.js",
