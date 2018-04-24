@@ -1,5 +1,7 @@
 # Hob
 
+**:warning: Hob is in active development, and is not ready for any prod use - do not use in prod until v1.0.0**
+
 Hobgoblin does chores in the background, helping your app run smoothly.
 
 Hob is a framework of frameworks, and can be used to do the following:
