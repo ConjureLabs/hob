@@ -13,7 +13,7 @@ module.exports.lib = async function lib(task, opts) {
 }
 
 module.exports.copyProcs = async function copyProcs(task) {
-  await task.source('procs/**/*').target('dist/procs')
+  await task.source('procs/**/*.js').target('dist/procs')
   await task.source('procs/**/.*').target('dist/procs')
 }
 
