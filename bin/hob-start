@@ -1,3 +1,32 @@
 #!/usr/bin/env node
 
-console.log('start')
+import parseArgs from 'minimist'
+import { resolve } from 'path'
+import { existsSync } from 'fs'
+
+import projectDir from '../lib/project-dir'
+import startProcess from '../lib/start-process'
+import generateClientConfig from '../lib/config/generate-client-config'
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    h: 'help'
+  },
+  boolean: ['h']
+})
+
+if (argv.help) {
+  console.log(`
+    Description
+      Runs the production application
+    Usage
+      $ hob start
+  `)
+  process.exit(0)
+}
+
+// kick off server (express)
+startProcess({
+  args: ['./server'],
+  cwd: projectDir
+})
