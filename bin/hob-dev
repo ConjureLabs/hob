@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import { existsSync } from 'fs'
 
 import projectDir from '../lib/project-dir'
+import projectPackages from '../lib/project-packages'
 import startProcess from '../lib/start-process'
 import generateClientConfig from '../lib/config/generate-client-config'
 
@@ -30,10 +31,68 @@ if (argv.help) {
   process.exit(0)
 }
 
-function wrapup() {
-  // kick off server (express)
+const steps = {}
+
+steps.prepareClient = function prepareClient(done) {
+  if (!projectPackages.includes('next')) {
+    return done()
+  }
+
   startProcess({
-    args: ['./server'],
+    args: ['../procs/stylus/prepare']
+  }, code => {
+    if (code !== 0) {
+      process.exit(code)
+    }
+
+    generateClientConfig()
+
+    done()
+  })
+}
+
+steps.resetDb = function resetDb(done) {
+  if (!argv['fresh-db'] || process.env.NODE_ENV === 'production') {
+    return done()
+  }
+
+  if (!existsSync(resolve(projectDir, 'sql', `init-${NODE_ENV}.sql`))) {
+    console.warn(`'hob dev --fresh-db' requires your project to have ./sql/init-${NODE_ENV}.sql`)
+    process.exit(1)
+  }
+
+  startProcess({
+    command: 'psql',
+    args: [
+      'postgres',
+      '--username=conjure_admin',
+      '-w',
+      `--file="init-${NODE_ENV}.sql`
+    ],
+    cwd: resolve(projectDir, 'sql')
+  }, code => {
+    if (code !== 0) {
+      process.exit(code)
+    }
+
+    done()
+  })
+}
+
+steps.start = function start() {
+  if (projectPackages.includes('next')) {
+    // kick off server (express)
+    startProcess({
+      args: ['./server'],
+      cwd: projectDir
+    })
+    return
+  }
+
+  // not using next, so will use nodemon
+  startProcess({
+    command: 'bash',
+    args: ['./node_modules/@conjurelabs/hob/dist/bash/run-and-watch.sh'],
     cwd: projectDir
   })
 }
@@ -45,49 +104,12 @@ function wrapup() {
       process.exit(1)
     }
 
-    wrapup()
-    return
+    return steps.start()
   }
 
-  // 1. transpile styles
-  startProcess({
-    args: ['../procs/stylus/prepare']
-  }, code => {
-    if (code !== 0) {
-      process.exit(code)
-    }
-
-    // 2. generate client config file
-    generateClientConfig()
-
-    // 3.a. if --fresh-db set, then wipe db and re-init
-    if (argv['fresh-db'] && process.env.NODE_ENV !== 'production') {
-      if (!existsSync(resolve(projectDir, 'sql', `init-${NODE_ENV}.sql`))) {
-        console.warn(`'hob dev --fresh-db' requires your project to have ./sql/init-${NODE_ENV}.sql`)
-        process.exit(1)
-      }
-
-      startProcess({
-        command: 'psql',
-        args: [
-          'postgres',
-          '--username=conjure_admin',
-          '-w',
-          `--file="init-${NODE_ENV}.sql`
-        ],
-        cwd: resolve(projectDir, 'sql')
-      }, code => {
-        if (code !== 0) {
-          process.exit(code)
-        }
-
-        // finally wrapup
-        wrapup()
-      })
-      return
-    }
-
-    // 3.b. else wrapup
-    wrapup()
+  steps.prepareClient(() => {
+    steps.resetDb(() => {
+      steps.start()
+    })
   })
 })()

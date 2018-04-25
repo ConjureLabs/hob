@@ -3,6 +3,7 @@
 import parseArgs from 'minimist'
 import { resolve } from 'path'
 
+import projectPackages from '../lib/project-packages'
 import startProcess from '../lib/start-process'
 import generateClientConfig from '../lib/config/generate-client-config'
 
@@ -27,6 +28,11 @@ if (argv.help) {
       --min, -m     Use short CSS class names
   `)
   process.exit(0)
+}
+
+if (!projectPackages.includes('next')) {
+  console.warn(`'hob compile' only works on repos using next`)
+  process.exit(1)
 }
 
 const stylusArgs = ['../procs/stylus/prepare']

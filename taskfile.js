@@ -21,8 +21,12 @@ module.exports.copyConf = async function copyConf(task) {
   await task.source('conf/**/.*').target('dist/conf')
 }
 
+module.exports.copyConf = async function copyConf(task) {
+  await task.source('conf/**/*.sh').target('dist/bash')
+}
+
 module.exports.copyDirs = async function copyDirs(task) {
-  await task.parallel(['copyProcs', 'copyConf'])
+  await task.serial(['copyProcs', 'copyConf', 'copyBash'])
 }
 
 module.exports.compile = async function compile(task) {

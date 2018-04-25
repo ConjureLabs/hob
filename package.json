@@ -28,6 +28,7 @@
   "dependencies": {
     "cross-spawn": "6.0.5",
     "minimist": "1.2.0",
+    "nodemon": "1.17.3",
     "rimraf": "2.6.2",
     "shell-source": "1.1.0",
     "stylus": "0.54.5"

@@ -49,7 +49,6 @@ source(resolve(projectDir, '.hob', '.env'), err => {
 
   const defaultCommand = 'dev'
   const commands = new Set([
-    'init',
     'build',
     'compile',
     'lint',
