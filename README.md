@@ -22,6 +22,19 @@ or
 yarn add @conjurelabs/hob
 ```
 
+All commands, listed below, must be run via `package.json` scripts.
+
+e.g.
+
+```json
+"scripts": {
+  "lint": "hob lint",
+  "dev": "hob dev",
+  "compile": "hob compile",
+  "build": "hob build",
+  "start": "hob start"
+}
+```
 ## Dev
 
 `hob dev`
