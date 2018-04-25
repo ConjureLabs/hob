@@ -30,8 +30,21 @@ if (argv.help) {
   process.exit(0)
 }
 
-if (!projectPackages.includes('next')) {
-  console.warn(`'hob compile' only works on repos using next`)
+let isFatal = false
+function fatalCondition(message) {
+  isFatal = true
+  console.warn(`⚠️\t${message}`)
+}
+
+['next', 'react', 'react-dom'].forEach(dependency => {
+  try {
+    // When 'npm link' is used it checks the clone location. Not the project.
+    require.resolve(dependency)
+  } catch (err) {
+    fatalCondition(`The module '${dependency}' was not found. Hob requires that you include it in 'dependencies' of your 'package.json'. To add it, run 'npm install --save ${dependency}'`)
+  }
+})
+if (isFatal) {
   process.exit(1)
 }
 

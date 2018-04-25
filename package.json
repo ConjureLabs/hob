@@ -46,9 +46,6 @@
   "peerDependencies": {
     "babel-eslint": "8.0.1",
     "eslint": "4.10.0",
-    "jscs": "3.0.7",
-    "next": "^5.0.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "jscs": "3.0.7"
   }
 }
