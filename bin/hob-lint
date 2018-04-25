@@ -31,7 +31,7 @@ if (argv.help) {
 const hobConf = resolve(__dirname, '../', 'conf')
 
 const projectEslintrc = resolve(projectDir, '.eslintrc')
-const eslintrc = existsSync(projectEslintrc) ? projectEslintrc : resolve(hobConf, '.eslintrc')
+const eslintrc = existsSync(projectEslintrc) ? projectEslintrc : resolve(hobConf, 'eslintrc.json')
 startProcess({
   command: 'eslint',
   args: [
@@ -47,7 +47,7 @@ startProcess({
   console.log('Lints passed')
 
   const projectJscsrc = resolve(projectDir, '.jscsrc')
-  const jscsrc = existsSync(projectJscsrc) ? projectJscsrc : resolve(hobConf, '.jscsrc')
+  const jscsrc = existsSync(projectJscsrc) ? projectJscsrc : resolve(hobConf, 'jscsrc.json')
   startProcess({
     command: 'jscs',
     args: [
