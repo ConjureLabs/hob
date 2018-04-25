@@ -14,11 +14,10 @@ module.exports.lib = async function lib(task, opts) {
 
 module.exports.copyProcs = async function copyProcs(task) {
   await task.source('procs/**/*.js').target('dist/procs')
-  await task.source('procs/**/.*').target('dist/procs')
 }
 
 module.exports.copyConf = async function copyConf(task) {
-  await task.source('conf/**/.*').target('dist/conf')
+  await task.source('conf/**/*.json').target('dist/conf')
 }
 
 module.exports.copyBash = async function copyConf(task) {
