@@ -97,7 +97,7 @@ steps.start = function start() {
   })
 }
 
-(function() {
+;(function() {
   if (argv.quick) {
     if (argv['fresh-db']) {
       console.warn(`Can't run 'hob dev' with both '--quick' and '--fresh-db`)
