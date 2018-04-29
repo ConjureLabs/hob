@@ -70,7 +70,9 @@ steps.prepareClient = function prepareClient(done) {
 }
 
 steps.resetDb = function resetDb(done) {
-  if (!argv['fresh-db'] || process.env.NODE_ENV === 'production') {
+  const { NODE_ENV } = process.env
+
+  if (!argv['fresh-db'] || NODE_ENV === 'production') {
     return done()
   }
 
