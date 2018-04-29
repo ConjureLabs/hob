@@ -64,7 +64,6 @@ steps.prepareClient = function prepareClient(done) {
     }
 
     generateClientConfig()
-
     done()
   })
 }
@@ -76,20 +75,24 @@ steps.resetDb = function resetDb(done) {
     return done()
   }
 
-  if (!existsSync(resolve(projectDir, 'sql', `init-${NODE_ENV}.sql`))) {
+  const sqlDir =resolve(projectDir, 'sql')
+
+  if (!existsSync(resolve(sqlDir, `init-${NODE_ENV}.sql`))) {
     console.warn(`'hob dev --fresh-db' requires your project to have ./sql/init-${NODE_ENV}.sql`)
     process.exit(1)
   }
+
+  const fullConfig = require('../lib/full-config')
 
   startProcess({
     command: 'psql',
     args: [
       'postgres',
-      '--username=conjure_admin',
+      `--username=${fullConfig.database.pg.user}`,
       '-w',
-      `--file="init-${NODE_ENV}.sql`
+      `--file="init-${NODE_ENV}.sql"`
     ],
-    cwd: resolve(projectDir, 'sql')
+    cwd: sqlDir
   }, code => {
     if (code !== 0) {
       process.exit(code)
