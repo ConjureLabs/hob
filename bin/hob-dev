@@ -90,14 +90,13 @@ steps.resetDb = function resetDb(done) {
   }
 
   startProcess({
-    command: 'psql',
+    command: 'bash',
     args: [
-      'postgres',
-      `--username=${hobConfig.fullConfig.database.pg.user}`,
-      '-w',
-      `--file="init-${NODE_ENV}.sql"`
+      './node_modules/@conjurelabs/hob/dist/bash/init-db.sh',
+      hobConfig.fullConfig.database.pg.user,
+      `init-${NODE_ENV}.sql`
     ],
-    cwd: sqlDir
+    cwd: projectDir
   }, code => {
     if (code !== 0) {
       process.exit(code)
