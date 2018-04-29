@@ -82,13 +82,18 @@ steps.resetDb = function resetDb(done) {
     process.exit(1)
   }
 
-  const fullConfig = require('../lib/full-config')
+  const hobConfig = require('../lib/get-config')
+
+  if (!hobConfig.fullConfig.database || !hobConfig.fullConfig.database.pg || !hobConfig.fullConfig.database.pg.user) {
+    console.warn(`⚠️\tHob expects fullConfig.database.pg.user (in .hob/config.js) to run databse init script`)
+    process.exit(1)
+  }
 
   startProcess({
     command: 'psql',
     args: [
       'postgres',
-      `--username=${fullConfig.database.pg.user}`,
+      `--username=${hobConfig.fullConfig.database.pg.user}`,
       '-w',
       `--file="init-${NODE_ENV}.sql"`
     ],
