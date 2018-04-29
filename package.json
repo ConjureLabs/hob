@@ -1,6 +1,6 @@
 {
   "name": "@conjurelabs/hob",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Hobgoblin to do odd jobs for your apps",
   "main": "index.js",
   "files": [
