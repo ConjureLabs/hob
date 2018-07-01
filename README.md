@@ -1,7 +1,5 @@
 # Hob
 
-**:warning: Hob is in active development, and is not ready for any prod use - do not use in prod until v1.0.0**
-
 Hobgoblin does chores in the background, helping your app run smoothly.
 
 Hob is a framework of frameworks, and can be used to do the following:
@@ -14,12 +12,6 @@ Hob is a framework of frameworks, and can be used to do the following:
 
 ```sh
 npm install --save @conjurelabs/hob
-```
-
-or
-
-```sh
-yarn add @conjurelabs/hob
 ```
 
 All commands, listed below, must be run via `package.json` scripts.
