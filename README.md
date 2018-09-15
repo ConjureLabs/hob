@@ -1,3 +1,5 @@
+*This project is no longer in development. A newer version of Conjure is in active development.*
+
 # Hob
 
 Hobgoblin does chores in the background, helping your app run smoothly.
